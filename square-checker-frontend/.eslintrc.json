@@ -1,0 +1,48 @@
+{
+	"extends": ["eslint:recommended", "plugin:react/recommended"],
+
+	"rules": {
+		"indent": ["error", "tab"],
+		"semi": [2, "always"],
+		"no-trailing-spaces": "error",
+		"no-inline-comments": "error",
+		"array-bracket-spacing": ["error", "never"],
+		"no-console": "warn",
+
+		"no-multi-spaces": "error",
+		"no-mixed-spaces-and-tabs": "error",
+		"no-implicit-coercion": "error",
+		"eqeqeq": "error",
+		"radix": "error",
+		"no-eq-null": "error",
+
+		"no-undef-init": "error",
+		"no-undefined": "error",
+
+		"no-var": "error",
+		"no-unused-vars": "error"
+	},
+
+	"plugins": [
+		"react"
+	],
+
+	"parserOptions": {
+		"ecmaVersion": 8,
+		"sourceType": "module",
+		"ecmaFeatures": {
+			"jsx": true,
+			"experimentalObjectRestSpread": true
+		}
+	},
+
+	"globals": {
+		"Pomise": true,
+		"setTimeout": true,
+		"console": true,
+		"document": true,
+		"window": true,
+		"Image": true,
+		"$": true
+	}
+}
