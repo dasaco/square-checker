@@ -11,15 +11,12 @@ const axios = require('axios');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
-var squares = require('./routes/squares');
 
 var app = express();
 
 const port = process.env.PORT || 3001;
 
 app.use(cors());
-app.use(index);
-
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -29,12 +26,22 @@ const server = http.createServer(app);
 const io = socketIo(server);
 
 io.on("connection", socket => {
-  console.log("New client connected"), setInterval(
-    () => getApiAndEmit(socket),
-    10000
-  );
+  console.log("New client connected");
+	getApiAndEmit(socket)
   socket.on("disconnect", () => console.log("Client disconnected"));
 });
+
+var squares = require('./routes/squares');
+app.use('/squares', squares);
+
+const getApiAndEmit = socket => {
+  try {
+		console.log('opa');
+	    socket.emit("SquareFound", {data : 'test'});
+  } catch (error) {
+    console.error(`Error: ${error}`);
+  }
+};
 
 server.listen(port, () => console.log(`Listening on port ${port}`));
 

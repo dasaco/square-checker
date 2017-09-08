@@ -18,7 +18,7 @@ class Points extends Component {
 	render() {
 		return (
 			<div>
-				<PointList onRemoveClick={this.props.onRemovePoint} squares={this.props.squares}/>
+				<PointList onRemoveClick={this.props.onRemovePoint} points={this.props.points}/>
 				<PointInput onPointAdd={this.props.onPointAdd} />
 			</div>
 		)

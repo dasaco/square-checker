@@ -19,7 +19,7 @@ class PointList extends Component {
 							<th>X</th>
 							<th>Y</th>
 						</tr>
-						{this.props.squares.map((point, i) =>
+						{this.props.points.map((point, i) =>
 							<PointItem onRemoveClick={this.props.onRemoveClick} key={i} index={i} point={point} />
 			      )}
 					</tbody>
