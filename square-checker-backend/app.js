@@ -27,21 +27,11 @@ const io = socketIo(server);
 
 io.on("connection", socket => {
   console.log("New client connected");
-	getApiAndEmit(socket)
   socket.on("disconnect", () => console.log("Client disconnected"));
 });
 
-var squares = require('./routes/squares');
+var squares = require('./routes/squares')(io);
 app.use('/squares', squares);
-
-const getApiAndEmit = socket => {
-  try {
-		console.log('opa');
-	    socket.emit("SquareFound", {data : 'test'});
-  } catch (error) {
-    console.error(`Error: ${error}`);
-  }
-};
 
 server.listen(port, () => console.log(`Listening on port ${port}`));
 

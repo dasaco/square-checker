@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import SquareItem from './squareItem/squareItem';
 
 class PointList extends Component {
 
@@ -15,11 +16,9 @@ class PointList extends Component {
 						<tr>
 							<th>Points</th>
 						</tr>
-						<tr>
-							<td>aaa</td>
-							<td>aaa</td>
-							<td>aaa</td>
-						</tr>
+						{this.props.squares.map((square, i) =>
+							<SquareItem key={i} index={i} square={square} />
+			      )}
 					</tbody>
 				</table>
 	    </div>

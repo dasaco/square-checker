@@ -39,13 +39,15 @@ class Frontpage extends Component {
 
 	onFindSquaresClicked() {
 		const { endpoint, points } = this.state;
-		axios.post(endpoint + '/squares/render-points', { points });
+		const socket = io(endpoint);
+		//axios.post(endpoint + '/squares/render-points', { points });
+		socket.emit('CountSquares', points);
 	}
 
 	componentDidMount() {
 		const { endpoint } = this.state;
 		const socket = io(endpoint);
-		socket.on("SquareFound", data => console.log(data));
+		socket.on("SquareFound", console.log('ssssss'));
 	}
 
 	onLoadFromFileClicked() {
