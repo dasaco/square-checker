@@ -18,8 +18,22 @@ class Points extends Component {
 	render() {
 		return (
 			<div>
-				<PointList onRemoveClick={this.props.onRemovePoint} points={this.props.points}/>
-				<PointInput onPointAdd={this.props.onPointAdd} />
+				<div className="panel panel-default">
+				  <div className="panel-heading">
+						<p>Add new point</p>
+				  </div>
+				  <div className="panel-body">
+						<PointInput onPointAdd={this.props.onPointAdd} />
+				  </div>
+				</div>
+				<div className="panel panel-default">
+					<div className="panel-heading">
+						Points
+					</div>
+					<div className="panel-body">
+						<PointList onRemoveClick={this.props.onRemovePoint} points={this.props.points}/>
+					</div>
+				</div>
 			</div>
 		)
 	}

@@ -9,7 +9,6 @@ module.exports = {
 	context: path.join(__dirname, '/src'),
 
 	entry: ['./index.js'],
-  devtool : 'source-map',
 
 	output: {
 		path: path.join(__dirname, '/dist'),

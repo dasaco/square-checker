@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import './pointInput.scss';
+
 class PointInput extends Component {
 
 	constructor(props) {
@@ -31,10 +33,24 @@ class PointInput extends Component {
 	render() {
 		return (
 			<div>
-				<form onSubmit={this.addPoint}>
-					<input type="text" onChange={this.onXChanged} />
-					<input type="text" onChange={this.onYChanged} />
-					<input type="submit" />
+				<form className="pointform" onSubmit={this.addPoint}>
+					<div className="row">
+						<div className="col-md-5">
+							<div className="form-group">
+								<label htmlFor="x">X:</label>
+								<input id="x" className="form-control" type="text" onChange={this.onXChanged} />
+							</div>
+						</div>
+						<div className="col-md-5">
+							<div className="form-group">
+								<label htmlFor="y">Y:</label>
+								<input id="y" className="form-control" type="text" onChange={this.onYChanged} />
+							</div>
+						</div>
+						<div className="col-md-2">
+							<input className="pointform__submit-btn btn btn-success" type="submit" value="Add" />
+						</div>
+					</div>
 				</form>
 			</div>
 		)

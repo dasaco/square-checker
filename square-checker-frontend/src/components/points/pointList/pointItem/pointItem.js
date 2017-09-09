@@ -15,9 +15,9 @@ class PointItem extends Component {
 	render() {
 		return (
 			<tr>
-				<td><a onClick={this.onRemoveClick}>X</a></td>
 				<td>{this.props.point.x}</td>
 				<td>{this.props.point.y}</td>
+				<td><a onClick={this.onRemoveClick}>X</a></td>
 			</tr>
 		)
 	}

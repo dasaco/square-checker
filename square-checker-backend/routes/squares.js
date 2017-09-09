@@ -1,19 +1,53 @@
 var express = require('express');
 var path = require('path');
 var router = express.Router();
+var appDir = path.dirname(require.main.filename);
+var fs = require('fs');
 
 module.exports = function(io) {
-	io.on("connection", socket => {
+	io.sockets.on("connection", socket => {
 		let squareCount = 0;
+		let squarePoints = [];
 
-		socket.on('CountSquares', (points) => {
-			console.log(points)
+		console.log('Squares.js connected');
+
+		socket.on('CountSquares', (points, callback) => {
+
+			squareCount = 0;
 
 			let r = 4;
 			let data = [];
 			checkSquares(points, data, 0, points.length - 1, 0, r);
-			console.log('ttttt');
-			socket.emit('SquareFound', squareCount)
+
+			return callback({squarePoints});
+		});
+
+		socket.on('GetFromFile', (callback) => {
+
+			console.log(appDir + '/data/points.txt');
+
+			let pointsArray = [];
+
+			fs.readFile(appDir + '/data/points.txt', 'utf8', function (err,data) {
+				if (err) {
+					return console.log(err);
+				}
+				splitData = data.split(/\n/g).filter(String);
+				splitData.forEach(function(element) {
+					var els = element.split(" ");
+					pointsArray.push(
+						{
+							x: els[0],
+							y: els[1]
+						}
+					);
+				});
+
+				console.log('Points from file: ');
+				console.log(pointsArray);
+
+				return callback({ pointsArray });
+			});
 		});
 
 		const vectorDistance = function(first, second) {
@@ -44,48 +78,7 @@ module.exports = function(io) {
 				}
 
 				return false;
-		}
-
-		router.get('/', (req, res, next) => {
-			res.send('Hello');
-		});
-
-		router.get('/get-from-file', (req, res, next) => {
-
-			let pointsArray = [];
-
-			fs = require('fs')
-			fs.readFile(__dirname + '/../data/points.txt', 'utf8', function (err,data) {
-				if (err) {
-					return console.log(err);
-				}
-				splitData = data.split(/\n/g).filter(String);
-				splitData.forEach(function(element) {
-					var els = element.split(" ");
-					pointsArray.push(
-						{
-							x: els[0],
-							y: els[1]
-						}
-					);
-				});
-
-				console.log('Points from file: ');
-				console.log(pointsArray);
-
-				res.json(pointsArray);
-			});
-		});
-
-		router.post('/render-points', (req, res) => {
-
-			let points = req.body.points;
-
-			let r = 4;
-			let data = [];
-			checkSquares(points, data, 0, points.length - 1, 0, r);
-
-		});
+		};
 
 		const checkSquares = function(arr, data, start, end, index, r) {
 			if (index == r)
@@ -97,17 +90,18 @@ module.exports = function(io) {
 				if(isSquare(p1, p2, p3, p4)) {
 					squareCount++;
 					console.log('true');
-					return true;
+					squarePoints.push({p1, p2, p3, p4});
+					return;
 				}
 				console.log('false');
-				return false;
+				return;
 			}
 			for (let i = start; i <= end && end - i + 1 >= r - index; i++)
 			{
 					data[index] = arr[i];
 					checkSquares(arr, data, i+1, end, index+1, r);
 			}
-		}
+		};
 	});
 
 	return router;

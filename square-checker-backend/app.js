@@ -27,12 +27,17 @@ const io = socketIo(server);
 
 io.on("connection", socket => {
   console.log("New client connected");
+	try {
+    socket.emit('SquareFound', { text: 'Socket called in app.js' });
+  } catch (error) {
+    console.error(`Socket Error: ${error.code}`);
+  }
   socket.on("disconnect", () => console.log("Client disconnected"));
 });
 
+server.listen(port, () => console.log(`Listening on port ${port}`));
+
 var squares = require('./routes/squares')(io);
 app.use('/squares', squares);
-
-server.listen(port, () => console.log(`Listening on port ${port}`));
 
 module.exports = app;

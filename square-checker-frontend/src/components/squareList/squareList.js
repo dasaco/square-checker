@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SquareItem from './squareItem/squareItem';
 
-class PointList extends Component {
+class SquareList extends Component {
 
 	constructor(props) {
 		super(props);
@@ -9,14 +9,18 @@ class PointList extends Component {
 
 	render() {
 		return (
-			<div className="squares-container">
-	      <h1>Squares</h1>
-				<table>
-					<tbody>
+			<div>
+				<table className="table">
+					<thead>
 						<tr>
-							<th>Points</th>
+							<th>p1</th>
+							<th>p2</th>
+							<th>p3</th>
+							<th>p4</th>
 						</tr>
-						{this.props.squares.map((square, i) =>
+					</thead>
+					<tbody>
+						{this.props.squarePoints.map((square, i) =>
 							<SquareItem key={i} index={i} square={square} />
 			      )}
 					</tbody>
@@ -26,4 +30,4 @@ class PointList extends Component {
 	}
 }
 
-export default PointList;
+export default SquareList;
