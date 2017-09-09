@@ -66,7 +66,7 @@ class PointList extends Component {
 					<thead>
 						<tr>
 							<th>X</th>
-							<th>Y</th>>
+							<th>Y</th>
 							<th>Remove</th>
 						</tr>
 					</thead>

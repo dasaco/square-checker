@@ -26,8 +26,8 @@
     "url-loader": "^0.5.9",
     "webpack": "^2.7.0",
     "webpack-dev-server": "^2.2.0",
-		"bootstrap-loader": "^2.0.0",
-		"bootstrap-sass": "^3.3.7",
+    "bootstrap-loader": "^2.0.0",
+    "bootstrap-sass": "^3.3.7",
     "resolve-url-loader": "^2.0.2"
   },
   "dependencies": {
@@ -37,6 +37,7 @@
     "lodash": "^4.17.4",
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.4.2",
+    "react-alert": "^2.3.0",
     "react-bootstrap": "^0.31.3",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.3",

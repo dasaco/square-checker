@@ -9,9 +9,6 @@ const http = require('http');
 const socketIo = require('socket.io');
 const axios = require('axios');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
-
 var app = express();
 
 const port = process.env.PORT || 3001;

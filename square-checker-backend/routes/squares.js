@@ -22,7 +22,7 @@ module.exports = function(io) {
 			return callback({squarePoints});
 		});
 
-		socket.on('GetFromFile', (callback) => {
+		socket.on('GetFromFile', callback => {
 
 			console.log(appDir + '/data/points.txt');
 
@@ -47,6 +47,24 @@ module.exports = function(io) {
 				console.log(pointsArray);
 
 				return callback({ pointsArray });
+			});
+		});
+
+		socket.on('SaveToFile', (points, callback) => {
+
+			let fileText = '';
+
+			points.forEach(point => {
+				fileText += point.x + " " + point.y + "\n";
+			});
+
+			fs.writeFile(appDir + '/data/points.txt', fileText, function(err) {
+			    if(err) {
+			        return console.log(err);
+			    }
+
+			    console.log("The file was saved!");
+					return callback({text: 'all good'});
 			});
 		});
 
@@ -89,11 +107,11 @@ module.exports = function(io) {
 				let p4 = data[3];
 				if(isSquare(p1, p2, p3, p4)) {
 					squareCount++;
-					console.log('true');
+					process.stdout.write('1');
 					squarePoints.push({p1, p2, p3, p4});
 					return;
 				}
-				console.log('false');
+				process.stdout.write('.');
 				return;
 			}
 			for (let i = start; i <= end && end - i + 1 >= r - index; i++)
