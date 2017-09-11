@@ -1,5 +1,11 @@
 .options {
 	text-align: center;
+
+	button {
+		&:not(:first-child) {
+			margin-left: 10px;
+		}
+	}
 }
 
 .glyphicon-refresh-animate {

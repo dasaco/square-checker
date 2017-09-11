@@ -9,9 +9,30 @@ module.exports = function(io) {
 		let squareCount = 0;
 		let squarePoints = [];
 
-		console.log('Squares.js connected');
+		const getFiles = (callback) => {
+			fs.readdir(appDir + '/data', (err, files) => {
+				let filesArray = [];
+			  files.forEach(file => {
+					filesArray.push(file);
+			  });
+				return callback(filesArray);
+			});
+		};
+
+		socket.on('RefreshFileList', callback => {
+			return callback(getFiles((filesArray) => socket.emit('FilesLoaded', { filesArray })));
+		});
 
 		socket.on('CountSquares', (points, callback) => {
+
+			let oldLength = points.length;
+			let duplicates = false;
+
+			points = points.filter((thing, index, self) => self.findIndex((t) => {return t.x === thing.x && t.y === thing.y; }) === index);
+
+			if(oldLength != points.length) {
+				duplicates = true;
+			}
 
 			squareCount = 0;
 
@@ -19,16 +40,16 @@ module.exports = function(io) {
 			let data = [];
 			checkSquares(points, data, 0, points.length - 1, 0, r);
 
-			return callback({squarePoints});
+			return callback({squarePoints, duplicates});
 		});
 
-		socket.on('GetFromFile', callback => {
+		socket.on('GetFromFile', (data, callback) => {
 
-			console.log(appDir + '/data/points.txt');
+			const { fileName, pointsLength } = data;
 
 			let pointsArray = [];
 
-			fs.readFile(appDir + '/data/points.txt', 'utf8', function (err,data) {
+			fs.readFile(appDir + '/data/' + fileName, 'utf8', function (err,data) {
 				if (err) {
 					return console.log(err);
 				}
@@ -43,14 +64,39 @@ module.exports = function(io) {
 					);
 				});
 
-				console.log('Points from file: ');
-				console.log(pointsArray);
+				let totalElementsLength = pointsArray.length + pointsLength;
+				let cut = false;
 
-				return callback({ pointsArray });
+				if(totalElementsLength >= 9999) {
+					pointsArray = pointsArray.splice(0, 10000 - pointsLength);
+					cut = true;
+				}
+
+				return callback({ pointsArray, cut });
 			});
 		});
 
-		socket.on('SaveToFile', (points, callback) => {
+		socket.on('DeleteFile', (fileName, callback) => {
+			fs.unlink(appDir + '/data/' + fileName, function(err) {
+			    if(err) {
+			        return console.log(err);
+			    }
+
+					fs.readdir(appDir + '/data', (err, files) => {
+						let filesArray = [];
+					  files.forEach(file => {
+							filesArray.push(file);
+					  });
+						return callback(filesArray);
+					});
+			});
+
+
+		});
+
+		socket.on('SaveToFile', (points, fileName, callback) => {
+
+			console.log('ffffile::' + fileName);
 
 			let fileText = '';
 
@@ -58,13 +104,26 @@ module.exports = function(io) {
 				fileText += point.x + " " + point.y + "\n";
 			});
 
-			fs.writeFile(appDir + '/data/points.txt', fileText, function(err) {
+			var re = /(?:\.([^.]+))?$/;
+
+			if(re.exec(fileName)[1] != 'txt') {
+				fileName += '.txt';
+			}
+
+			fs.writeFile(appDir + '/data/' + fileName, fileText, function(err) {
 			    if(err) {
 			        return console.log(err);
 			    }
 
 			    console.log("The file was saved!");
-					return callback({text: 'all good'});
+
+					fs.readdir(appDir + '/data', (err, files) => {
+						let filesArray = [];
+					  files.forEach(file => {
+							filesArray.push(file);
+					  });
+						return callback(filesArray);
+					});
 			});
 		});
 
@@ -107,11 +166,9 @@ module.exports = function(io) {
 				let p4 = data[3];
 				if(isSquare(p1, p2, p3, p4)) {
 					squareCount++;
-					process.stdout.write('1');
 					squarePoints.push({p1, p2, p3, p4});
 					return;
 				}
-				process.stdout.write('.');
 				return;
 			}
 			for (let i = start; i <= end && end - i + 1 >= r - index; i++)

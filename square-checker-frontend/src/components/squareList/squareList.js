@@ -50,9 +50,9 @@ class SquareList extends Component {
 		return (
 			<div>
 				<div className="text-right">
-					<div class="form-group">
-						<label for="sel1">Show:</label>
-						<select class="form-control" onChange={this.onShowChange}>
+					<div>
+						<label htmlFor="sel1">Show:</label>
+						<select onChange={this.onShowChange}>
 							<option value="5">5</option>
 							<option value="10">10</option>
 							<option value="20">20</option>
@@ -63,10 +63,10 @@ class SquareList extends Component {
 				<table className="table">
 					<thead>
 						<tr>
-							<th>p1</th>
-							<th>p2</th>
-							<th>p3</th>
-							<th>p4</th>
+							<th>Point 1</th>
+							<th>Point 2</th>
+							<th>Point 3</th>
+							<th>Point 4</th>
 						</tr>
 					</thead>
 					<tbody>

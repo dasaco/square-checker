@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import './pointItem.scss';
+
 class PointItem extends Component {
 
 	constructor(props) {
@@ -17,7 +19,11 @@ class PointItem extends Component {
 			<tr>
 				<td>{this.props.point.x}</td>
 				<td>{this.props.point.y}</td>
-				<td><a onClick={this.onRemoveClick}>X</a></td>
+				<td className="text-right">
+					<a className="remove" onClick={this.onRemoveClick}>
+						<img src="/img/delete.svg" />
+					</a>
+				</td>
 			</tr>
 		)
 	}

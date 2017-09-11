@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import AlertContainer from 'react-alert';
 
 import './pointInput.scss';
 
@@ -8,13 +9,38 @@ class PointInput extends Component {
 		super(props);
 
 		this.state = {
-			x: null,
-			y: null
+			x: '',
+			y: ''
 		};
 
 		this.onXChanged = this.onXChanged.bind(this);
 		this.onYChanged = this.onYChanged.bind(this);
 		this.addPoint = this.addPoint.bind(this);
+	}
+
+	componentDidMount() {
+		const alertOptions = {
+	    offset: 14,
+	    position: 'bottom left',
+	    theme: 'dark',
+	    time: 5000,
+	    transition: 'scale'
+	  }
+	}
+
+
+	showSucess = (message) => {
+		this.msg.show(message, {
+			time: 2000,
+			type: 'success'
+		})
+	}
+
+	showInfo = (message) => {
+		this.msg.show(message, {
+			time: 2000,
+			type: 'info'
+		})
 	}
 
 	onXChanged(evt) {
@@ -27,24 +53,33 @@ class PointInput extends Component {
 
 	addPoint(evt) {
 		evt.preventDefault();
-		this.props.onPointAdd(this.state.x, this.state.y);
+		const { x, y } = this.state;
+
+		if(x < -5000 || x > 5000 || y < -5000 || y > 5000) {
+			this.showInfo('Point values are not valid');
+			return false;
+		} else {
+			this.props.onPointAdd(x, y);
+			this.setState({x: '', y: ''});
+		}
 	}
 
 	render() {
 		return (
 			<div>
+				<AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
 				<form className="pointform" onSubmit={this.addPoint}>
 					<div className="row">
 						<div className="col-md-5">
 							<div className="form-group">
 								<label htmlFor="x">X:</label>
-								<input id="x" className="form-control" type="text" onChange={this.onXChanged} />
+								<input id="x" className="form-control" type="text" value={this.state.x} onChange={this.onXChanged} />
 							</div>
 						</div>
 						<div className="col-md-5">
 							<div className="form-group">
 								<label htmlFor="y">Y:</label>
-								<input id="y" className="form-control" type="text" onChange={this.onYChanged} />
+								<input id="y" className="form-control" type="text" value={this.state.y} onChange={this.onYChanged} />
 							</div>
 						</div>
 						<div className="col-md-2">
