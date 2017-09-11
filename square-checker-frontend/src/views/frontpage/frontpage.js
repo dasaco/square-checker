@@ -30,6 +30,7 @@ class Frontpage extends Component {
 		this.onClearPointsClicked = this.onClearPointsClicked.bind(this);
 		this.onFileSaveClicked = this.onFileSaveClicked.bind(this);
 		this.onDeleteFileClicked = this.onDeleteFileClicked.bind(this);
+		this.onFileRefreshClicked = this.onFileRefreshClicked.bind(this);
 	}
 
 	onPointAdd(x, y) {
@@ -96,12 +97,18 @@ class Frontpage extends Component {
 	onLoadFromFileClicked(fileName) {
 		const { endpoint, points } = this.state;
 		const socket = io(endpoint);
-		socket.emit('GetFromFile', { fileName, pointsLength: points.length }, data => {
+		socket.emit('GetFromFile', { fileName, currentPoints: points }, data => {
 			this.setState({
-				points: this.state.points.concat(data.pointsArray)
+				points: data.pointsArray
 			});
 			if(data.cut) {
 				this.showInfo('Points were cut to not exceed 10000');
+			}
+			if(data.invalidNumbers) {
+				this.showInfo('There were invalid numbers in the file, but they were ignored');
+			}
+			if(data.duplicates) {
+				this.showInfo('There were duplicates, but they were ignored');
 			}
 			this.showSucess('Points were loaded from file succesfully!');
 		});
@@ -138,6 +145,12 @@ class Frontpage extends Component {
 		})
 	}
 
+	onFileRefreshClicked() {
+		const { endpoint, points } = this.state;
+		const socket = io(endpoint);
+		socket.emit('RefreshFileList', () => this.showSucess('Files refreshed'));
+	}
+
 	render() {
 	  return (
 			<div className="container-fluid">
@@ -152,7 +165,7 @@ class Frontpage extends Component {
 									Files
 								</div>
 								<div className="panel-body options">
-									<FileList onDeleteFileClicked={this.onDeleteFileClicked} onFileSaveClicked={this.onFileSaveClicked} onLoadFromFileClicked={this.onLoadFromFileClicked} files={this.state.files} />
+									<FileList onFileRefreshClicked={this.onFileRefreshClicked} onDeleteFileClicked={this.onDeleteFileClicked} onFileSaveClicked={this.onFileSaveClicked} onLoadFromFileClicked={this.onLoadFromFileClicked} files={this.state.files} />
 								</div>
 							</div>
 

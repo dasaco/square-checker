@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import AlertContainer from 'react-alert';
 
 import './pointInput.scss';
+import { isNumeric } from '../../../helpers/helpers';
 
 class PointInput extends Component {
 
@@ -27,7 +28,6 @@ class PointInput extends Component {
 	    transition: 'scale'
 	  }
 	}
-
 
 	showSucess = (message) => {
 		this.msg.show(message, {
@@ -55,7 +55,7 @@ class PointInput extends Component {
 		evt.preventDefault();
 		const { x, y } = this.state;
 
-		if(x < -5000 || x > 5000 || y < -5000 || y > 5000) {
+		if(x < -5000 || x > 5000 || y < -5000 || y > 5000 || !isNumeric(x) || !isNumeric(y)) {
 			this.showInfo('Point values are not valid');
 			return false;
 		} else {

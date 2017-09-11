@@ -69,11 +69,12 @@ class PointList extends Component {
           </thead>
           <tbody>
             {currentItems.map((point, i) =>
-              <PointItem
+              (<PointItem
                 onRemoveClick={this.props.onRemoveClick}
                 key={i}
                 index={i}
-                point={point} />,
+                point={point}
+              />),
         )}
           </tbody>
         </table>

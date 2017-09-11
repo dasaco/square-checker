@@ -4,7 +4,7 @@ var router = express.Router();
 var appDir = path.dirname(require.main.filename);
 var fs = require('fs');
 
-module.exports = function(io) {
+module.exports = io => {
 	io.sockets.on("connection", socket => {
 		let squareCount = 0;
 		let squarePoints = [];
@@ -45,39 +45,55 @@ module.exports = function(io) {
 
 		socket.on('GetFromFile', (data, callback) => {
 
-			const { fileName, pointsLength } = data;
+			let invalidNumbers = false;
+			let duplicates = false;
+
+			let { fileName, currentPoints } = data;
 
 			let pointsArray = [];
 
-			fs.readFile(appDir + '/data/' + fileName, 'utf8', function (err,data) {
+			fs.readFile(appDir + '/data/' + fileName, 'utf8', (err,data) => {
 				if (err) {
 					return console.log(err);
 				}
 				splitData = data.split(/\n/g).filter(String);
-				splitData.forEach(function(element) {
+				splitData.forEach(element => {
 					var els = element.split(" ");
-					pointsArray.push(
-						{
-							x: els[0],
-							y: els[1]
-						}
-					);
+					if(isNumeric(els[0]) & isNumeric(els[1])) {
+						pointsArray.push(
+							{
+								x: els[0],
+								y: els[1]
+							}
+						);
+					} else {
+						invalidNumbers = true;
+					}
 				});
 
-				let totalElementsLength = pointsArray.length + pointsLength;
+				let totalElementsLength = pointsArray.length + currentPoints.length;
 				let cut = false;
 
 				if(totalElementsLength >= 9999) {
-					pointsArray = pointsArray.splice(0, 10000 - pointsLength);
+					pointsArray = pointsArray.splice(0, 10000 - currentPoints.length);
 					cut = true;
 				}
 
-				return callback({ pointsArray, cut });
+				pointsArray = pointsArray.concat(currentPoints);
+
+				let oldLength = pointsArray.length;
+				pointsArray = pointsArray.filter((thing, index, self) => self.findIndex((t) => {return t.x === thing.x && t.y === thing.y; }) === index);
+
+				if(pointsArray.length != oldLength) {
+					duplicates = true;
+				}
+
+				return callback({ pointsArray, cut, invalidNumbers, duplicates });
 			});
 		});
 
 		socket.on('DeleteFile', (fileName, callback) => {
-			fs.unlink(appDir + '/data/' + fileName, function(err) {
+			fs.unlink(appDir + '/data/' + fileName, err => {
 			    if(err) {
 			        return console.log(err);
 			    }
@@ -96,8 +112,6 @@ module.exports = function(io) {
 
 		socket.on('SaveToFile', (points, fileName, callback) => {
 
-			console.log('ffffile::' + fileName);
-
 			let fileText = '';
 
 			points.forEach(point => {
@@ -110,7 +124,7 @@ module.exports = function(io) {
 				fileName += '.txt';
 			}
 
-			fs.writeFile(appDir + '/data/' + fileName, fileText, function(err) {
+			fs.writeFile(appDir + '/data/' + fileName, fileText, err => {
 			    if(err) {
 			        return console.log(err);
 			    }
@@ -127,12 +141,16 @@ module.exports = function(io) {
 			});
 		});
 
-		const vectorDistance = function(first, second) {
+		const isNumeric = n => {
+			return !isNaN(parseFloat(n)) && isFinite(n);
+		}
+
+		const vectorDistance = (first, second) => {
 			return (first.x - second.x)*(first.x - second.x) +
 							 (first.y - second.y)*(first.y - second.y);
 		};
 
-		const isSquare = function(p1, p2, p3, p4) {
+		const isSquare = (p1, p2, p3, p4) => {
 				let d2 = vectorDistance(p1, p2);
 				let d3 = vectorDistance(p1, p3);
 				let d4 = vectorDistance(p1, p4);
@@ -157,7 +175,7 @@ module.exports = function(io) {
 				return false;
 		};
 
-		const checkSquares = function(arr, data, start, end, index, r) {
+		const checkSquares = (arr, data, start, end, index, r) => {
 			if (index == r)
 			{
 				let p1 = data[0];

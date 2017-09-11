@@ -27,7 +27,7 @@ class FileList extends Component {
 					</tbody>
 				</table>
 				<hr />
-				<FileInput onFileSaveClicked={this.props.onFileSaveClicked} />
+				<FileInput onFileRefreshClicked={this.props.onFileRefreshClicked} onFileSaveClicked={this.props.onFileSaveClicked} />
 	    </div>
 		)
 	}
