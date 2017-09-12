@@ -2,7 +2,7 @@
 
 Square checker is a tool that can find all possible squares from the given (x, y) points.
 
-![alt text][demo]
+![alt text](/demo.gif)
 
 # Architecture
 
