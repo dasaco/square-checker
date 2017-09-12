@@ -7,8 +7,8 @@ Square checker is a tool that can find all possible squares from the given (x, y
 Projects consists of two folers - square-checker-backend (server), square-checker-frontend (react).
 In order to run the application, you have to the the following
 
-1. Execute npm install and npm start in the square-checker-backend folder
-2. Execute npm install and npm start in the square-checker-frontend folder
+1. Execute `npm install` and `npm start` in the square-checker-backend folder
+2. Execute `npm install` and `npm start` in the square-checker-frontend folder
 
 # How to use it
 
