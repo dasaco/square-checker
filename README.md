@@ -2,6 +2,8 @@
 
 Square checker is a tool that can find all possible squares from the given (x, y) points.
 
+![alt text](/demo.gif)
+
 # Architecture
 
 Projects consists of two folers - square-checker-backend (server), square-checker-frontend (react).
