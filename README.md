@@ -2,9 +2,15 @@
 
 Square checker is a tool that can find all possible squares from the given (x, y) points.
 
-# How to make it run
+# Architecture
 
 Projects consists of two folers - square-checker-backend (server), square-checker-frontend (react).
+
+Square-checker-backend - contains server code, which opens a socket for frontend connections
+Square-checker-frontend - contains frontend code which sends requests through a socket to backend
+
+# How to make it run
+
 In order to run the application, you have to the the following
 
 1. Execute `npm install` and `npm start` in the square-checker-backend folder
