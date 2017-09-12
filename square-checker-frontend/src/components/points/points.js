@@ -23,6 +23,7 @@ class Points extends Component {
             <p>Add new point</p>
           </div>
           <div className="panel-body">
+						<p>Point cannot be above 5000 and below -5000. It can ony contain numbers.</p>
             <PointInput onPointAdd={this.props.onPointAdd} />
           </div>
         </div>

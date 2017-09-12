@@ -33,7 +33,7 @@ class FileInput extends Component {
           <div className="row">
             <div className="col-md-6">
               <div className="form-group">
-                <input placeholder="Filename" id="filename" className="form-control" type="text" value={this.state.fileName} onChange={this.onFileNameChanged} />
+                <input autoComplete="off" placeholder="Filename" id="filename" className="form-control" type="text" value={this.state.fileName} onChange={this.onFileNameChanged} />
               </div>
             </div>
             <div className="col-md-2">

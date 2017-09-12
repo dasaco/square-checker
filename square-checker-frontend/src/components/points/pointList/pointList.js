@@ -41,8 +41,8 @@ class PointList extends Component {
     }
 
     const renderPageNumbers = pageNumbers.map(number => (
-      <li>
-        <a key={number} id={number} onClick={this.onPageClicked}>{number}</a>
+      <li key={number} >
+        <a id={number} onClick={this.onPageClicked}>{number}</a>
       </li>
       ));
 

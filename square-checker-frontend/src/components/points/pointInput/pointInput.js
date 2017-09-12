@@ -59,7 +59,7 @@ class PointInput extends Component {
 			this.showInfo('Point values are not valid');
 			return false;
 		} else {
-			this.props.onPointAdd(x, y);
+			this.props.onPointAdd(Math.round(x * 100) / 100, Math.round(x * 100) / 100);
 			this.setState({x: '', y: ''});
 		}
 	}
@@ -73,13 +73,13 @@ class PointInput extends Component {
 						<div className="col-md-5">
 							<div className="form-group">
 								<label htmlFor="x">X:</label>
-								<input id="x" className="form-control" type="text" value={this.state.x} onChange={this.onXChanged} />
+								<input autoComplete="off" id="x" className="form-control" type="text" value={this.state.x} onChange={this.onXChanged} />
 							</div>
 						</div>
 						<div className="col-md-5">
 							<div className="form-group">
 								<label htmlFor="y">Y:</label>
-								<input id="y" className="form-control" type="text" value={this.state.y} onChange={this.onYChanged} />
+								<input autoComplete="off" id="y" className="form-control" type="text" value={this.state.y} onChange={this.onYChanged} />
 							</div>
 						</div>
 						<div className="col-md-2">

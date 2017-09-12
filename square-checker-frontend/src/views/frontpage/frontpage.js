@@ -36,20 +36,21 @@ class Frontpage extends Component {
 	onPointAdd(x, y) {
 		const { points } = this.state;
 
-		if (points.filter(function(point) { return point.x == x && point.y == y; }).length > 0) {
-		  this.showInfo('Point already exists!');
+		if (points.filter(point => { return point.x == x && point.y == y; }).length > 0) {
+			this.showInfo('Point already exists!');
 		} else if(points.length >= 10000) {
 			this.showInfo('List already contains 10000 points');
 		} else {
 			this.setState({
 			  points: this.state.points.concat([{x, y}])
 			});
+			this.showSucess('Point has been added!');
 		}
 	}
 
 	onRemovePoint(index) {
 		this.setState({
-        points: this.state.points.filter(function (e, i) {
+        points: this.state.points.filter((e, i) => {
         return i !== index;
       })
     });
@@ -61,8 +62,7 @@ class Frontpage extends Component {
 		this.setState({isLoading: true});
 		this.showInfo('Looking for squares started...');
 		socket.emit('CountSquares', points, data => {
-			this.setState({squarePoints: data.squarePoints})
-			console.log(data.squarePoints);
+			this.setState({squarePoints: data.squarePoints});
 			this.setState({isLoading: false});
 			this.showSucess('Squares searching process finished!');
 			if(data.duplicates) this.showInfo('WARNING: Duplicates were found!');
@@ -187,7 +187,8 @@ class Frontpage extends Component {
 									Square processing
 								</div>
 								<div className="panel-body">
-									<button className="btn btn-default" onClick={this.onFindSquaresClicked} type="button">
+									"Find squares" will find all possible squares you can build from the given points in the "Points" tab
+									<button className="find-squares btn btn-default" onClick={this.onFindSquaresClicked} type="button">
 										{ this.state.isLoading ? (<span className="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>) : '' }
 											Find squares</button>
 								</div>

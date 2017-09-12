@@ -3,12 +3,12 @@ var squares = require('../routes/squares');
 var io = require('socket.io-client');
 var expect = require('Chai').expect;
 
-describe('Square Functions', function(){
+describe('Square Functions', function(done){
 
 	const endpoint = 'http://127.0.0.1:3001';
 	const socket = io(endpoint);
 
-	it('should find 1 square', function(done){
+	it('should find 1 square', function(){
 
 		const points = [
 			{x: 0, y: 0},
