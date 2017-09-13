@@ -6,7 +6,7 @@ Square checker is a tool that can find all possible squares from the given (x, y
 
 # Architecture
 
-Projects consists of two fodlers - square-checker-backend (server), square-checker-frontend (react).
+Projects consists of two folders - square-checker-backend (server), square-checker-frontend (react).
 
 Square-checker-backend - contains server code, which opens a socket for frontend connections.
 
